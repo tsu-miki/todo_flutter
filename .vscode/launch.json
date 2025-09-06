@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flutter: Chrome",
+      "type": "dart",
+      "request": "launch",
+      "deviceId": "chrome"
+    },
+    {
+      "name": "Flutter: iOS",
+      "type": "dart",
+      "request": "launch",
+      "deviceId": "ios"
+    },
+    {
+      "name": "Flutter: Android",
+      "type": "dart",
+      "request": "launch",
+      "deviceId": "android"
+    }
+  ]
+}
