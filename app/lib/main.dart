@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 
-void main() {
+late ValueNotifier<int> counter;
+
+void main() async {
+  await initLocalStorage();
+  
+  counter = ValueNotifier(int.parse(localStorage.getItem('counter') ?? '0'));
+  counter.addListener(() => localStorage.setItem('counter', counter.value.toString()));
   runApp(const MyApp());
 }
 
@@ -10,26 +17,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      home: Scaffold(
+        appBar: AppBar(title: Text("todo app")),
+        body: Column(
+          children: [
+            Text("hello world!"),
+            ValueListenableBuilder(
+              valueListenable: counter,
+              builder: (context, value, child) {
+                return Text(value.toString());
+              }
+            )
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (() => counter.value ++),
+          child: const Icon(Icons.add),
+        ),
       ),
-      home: const MyHomePage(title: 'Todo App'),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Text("Hello World!!!")
-      
     );
   }
 }
