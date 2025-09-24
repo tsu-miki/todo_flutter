@@ -1,13 +1,26 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 
-late ValueNotifier<int> counter;
+class Todo {
+  final String id;
+  final String title;
+
+  Todo({required this.id, required this.title});
+
+  factory Todo.fromJson(Map<String, dynamic> json) {
+    return Todo(
+      id: json['id'],
+      title: json['title']
+    );
+  }
+}
+late ValueNotifier<Todo> todo;
 
 void main() async {
   await initLocalStorage();
   
-  counter = ValueNotifier(int.parse(localStorage.getItem('counter') ?? '0'));
-  counter.addListener(() => localStorage.setItem('counter', counter.value.toString()));
+  todo = ValueNotifier(Todo.fromJson(jsonDecode(localStorage.getItem('todo') ?? '{"id": "1", "title": "todo1"}')));
   runApp(const MyApp());
 }
 
@@ -21,17 +34,16 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(title: Text("todo app")),
         body: Column(
           children: [
-            Text("hello world!"),
             ValueListenableBuilder(
-              valueListenable: counter,
+              valueListenable: todo,
               builder: (context, value, child) {
-                return Text(value.toString());
+                return Text(value.title);
               }
             )
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: (() => counter.value ++),
+          onPressed: (() => {}),
           child: const Icon(Icons.add),
         ),
       ),
